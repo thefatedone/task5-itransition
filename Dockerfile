@@ -111,10 +111,41 @@ COPY --from=frontend-build /src/frontend/dist/ ./wwwroot/
 # ASPNETCORE_URLS env var. We bake it into the image so the default
 # `docker run` works without extra flags; the env var can still be
 # overridden at run time.
+#
+# DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false — disables inotify-based
+# FileSystemWatcher creation in the .NET 8 hosting startup. Constrained
+# container hosts (Render.com free tier) cap fs.inotify.max_user_instances
+# at 128, and the default hosting layer alone would saturate that, crashing
+# the app with:
+#
+#   System.IO.IOException: The configured user limit (128) on the number
+#   of inotify instances has been reached
+#     at Microsoft.Extensions.Configuration.Json.JsonConfigurationSource.Build
+#
+# The .NET Generic Host reads this key during ApplyDefaultAppConfiguration,
+# BEFORE any JsonConfigurationSource is built — so flipping it here prevents
+# the FileSystemWatcher from ever being instantiated. See:
+#   dotnet/runtime release/8.0 src/libraries/Microsoft.Extensions.Hosting/
+#   src/HostingHostBuilderExtensions.cs
+#
+# Key derivation (verified against .NET 8 source):
+#   1. Env var name: DOTNET_hostBuilder__reloadConfigOnChange
+#   2. EnvironmentVariablesConfigurationProvider normalises "__" → ":"
+#      → key "DOTNET:hostBuilder:reloadConfigOnChange"
+#   3. The host-config env-var provider is registered with prefix "DOTNET_"
+#      so the prefix is stripped
+#      → final key "hostBuilder:reloadConfigOnChange"
+#   4. ApplyDefaultAppConfiguration reads that key to decide the
+#      reloadOnChange bool passed to AddJsonFile(...)
+#
+# Important: the unprefixed form "hostBuilder__reloadConfigOnChange" is
+# silently IGNORED — the host config provider requires the DOTNET_ prefix.
+# Setting both is wasteful and misleading; we set only the prefixed form.
 ENV ASPNETCORE_URLS=http://+:8080 \
     ASPNETCORE_ENVIRONMENT=Production \
     DOTNET_RUNNING_IN_CONTAINER=true \
-    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
 
 EXPOSE 8080
 

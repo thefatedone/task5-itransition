@@ -3,23 +3,41 @@ using MovieShowcase.Api.Endpoints;
 using MovieShowcase.Api.Services;
 
 // ---------------------------------------------------------------------------
-// WebApplication.CreateBuilder() registers appsettings.json and
-// appsettings.{Environment}.json with `reloadOnChange: true` by default.
-// Each reloadOnChange source opens a FileSystemWatcher, which on Linux uses
-// inotify. Constrained container hosts (e.g. Render.com free tier) cap the
-// per-process inotify instance count at 128, and the default hosting layer
-// alone can saturate that — crashing the app with:
+// Reload-on-change suppression — IMPORTANT: the loop below is a SECONDARY
+// guard, not the primary fix.
+//
+// PRIMARY FIX is in the Dockerfile's runtime stage:
+//   ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+//
+// Why primary matters: WebApplication.CreateBuilder() registers appsettings.json
+// and appsettings.{Environment}.json with reloadOnChange:true by default, and
+// the FileSystemWatcher is created EAGERLY inside the JsonConfigurationProvider
+// constructor (via ChangeToken.OnChange(producer) → producer() →
+// FileProvider.Watch → new FileSystemWatcher). On Linux that watcher
+// consumes an inotify instance, and constrained container hosts (Render.com
+// free tier caps fs.inotify.max_user_instances at 128) crash the app with:
 //
 //   System.IO.IOException: The configured user limit (128) on the number
 //   of inotify instances has been reached
+//     at System.IO.FileSystemWatcher.StartRaisingEvents()
+//     at ...ApplyDefaultAppConfiguration(...)
+//     at WebApplicationBuilder..ctor(...)
+//     at WebApplication.CreateBuilder(...)
 //
-// We never hot-reload config in production (a redeploy replaces the whole
-// image), so we disable watching on every JSON config source before any
-// builder.Build() runs. Environment variables are unaffected — those don't
-// use FileSystemWatcher.
+// That crash happens BEFORE CreateBuilder returns — so any mutation of
+// builder.Configuration.Sources AFTER CreateBuilder runs (which is what we
+// do below) is too late to prevent it. The env var works because
+// ApplyDefaultAppConfiguration reads `hostBuilder:reloadConfigOnChange`
+// from the host config (built from `DOTNET_*` env vars + CLI) BEFORE adding
+// the JSON sources — see HostingHostBuilderExtensions.cs in dotnet/runtime
+// release/8.0.
 //
-// We keep the JSON sources themselves (don't Clear() and re-add) so the
-// file set is identical to the default; we only flip the watch bit.
+// What the loop below still buys us:
+//   - In dev (or anyone re-introducing reload via a future code path),
+//     this disables the change-token registration so reloads stay off.
+//   - It's a zero-cost safety net — one foreach over a tiny list.
+//   - We keep the JSON sources themselves (don't Clear() and re-add) so
+//     the file set is identical to the default; we only flip the watch bit.
 var builder = WebApplication.CreateBuilder(args);
 
 foreach (var source in builder.Configuration.Sources)
