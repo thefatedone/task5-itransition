@@ -18,10 +18,33 @@ export interface TitleAnimationSegment {
   textColor: string;
 }
 
+/**
+ * Per-segment background video clip + visual treatment. The browser tries
+ * to load and draw the clip; if loading fails (CORS, network, decoder),
+ * it falls back to the canvas background renderer for that segment.
+ */
+export interface VideoSegmentEffect {
+  /** Direct .mp4 URL — must be CORS-friendly. */
+  clipUrl: string;
+  /** Playback rate: 0.7 (slow) to 1.5 (fast). 1.0 = normal. */
+  playbackRate: number;
+  /** Starting zoom factor for the canvas drawImage. */
+  zoomStart: number;
+  /** Ending zoom factor (interpolated over the segment's duration). */
+  zoomEnd: number;
+  /** Color-grading preset, e.g. "none" | "sepia" | "cool-blue". */
+  colorFilter: string;
+  /** Start time of this segment, in ms relative to trailer start. */
+  startMs: number;
+  /** Length of this segment, in ms. */
+  durationMs: number;
+}
+
 export interface TrailerSpec {
   /** Total trailer length in milliseconds, in [5000, 10000]. */
   durationMs: number;
-  /** Background renderer identifier, e.g. "gradient", "particles". */
+  /** Background renderer identifier, e.g. "gradient", "particles".
+   *  Used as a fallback when a video clip can't load. */
   backgroundStyle: string;
   /** 2–3 hex colors (#RRGGBB) for the background renderer. */
   backgroundColors: string[];
@@ -29,6 +52,9 @@ export interface TrailerSpec {
   titleSegments: TitleAnimationSegment[];
   /** Transition names between adjacent segments (length = segments-1). */
   transitionTypes: string[];
+  /** One video effect per title segment, aligned to its StartMs/DurationMs.
+   *  Empty array means "no video — use the canvas renderer for the whole trailer". */
+  videoEffects: VideoSegmentEffect[];
 }
 
 export interface Movie {

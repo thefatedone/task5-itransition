@@ -185,13 +185,53 @@ public static class TrailerSpecGenerator
             transitions.Add(Pick(TransitionTypes, rng));
         }
 
+        // 6. Video background effects — one per title segment. The clips
+        //    play in parallel with the text segments; timing aligns exactly
+        //    so a clip's window covers its corresponding text segment.
+        //    If the client can't load a clip it falls back to the canvas
+        //    background renderer for that segment.
+        //
+        //    Strategy: pick a clip per segment, allow repeats (small pool,
+        //    and variety within a single trailer doesn't matter as much as
+        //    variety across trailers). For each segment:
+        //      - clip URL          (1 rng draw)
+        //      - playback rate     (1 rng draw, mapped to 0.7..1.5)
+        //      - zoomStart         (1 rng draw, mapped to 1.0..1.3)
+        //      - zoomEnd           (1 rng draw, mapped to 1.0..1.4)
+        //      - color filter      (1 rng draw)
+        //    Determinism contract: same seed → identical VideoEffects array
+        //    on every call.
+        var videoEffects = new List<VideoSegmentEffect>(segmentCount);
+        for (var i = 0; i < segmentCount; i++)
+        {
+            var clipUrl   = Pick(VideoClipLibrary.ClipUrls, rng);
+            var rate      = 0.7 + rng.NextDouble() * 0.8;    // 0.7..1.5
+            var zoomStart = 1.0 + rng.NextDouble() * 0.3;    // 1.0..1.3
+            // End zoom is biased to be ≥ start so the visual "leans in".
+            // Occasional pull-back (end < start) is allowed (rng-driven).
+            var zoomEnd   = 1.0 + rng.NextDouble() * 0.4;    // 1.0..1.4
+            var colorFilter = Pick(VideoClipLibrary.ColorFilters, rng);
+
+            videoEffects.Add(new VideoSegmentEffect
+            {
+                ClipUrl      = clipUrl,
+                PlaybackRate = Math.Round(rate, 3),
+                ZoomStart    = Math.Round(zoomStart, 3),
+                ZoomEnd      = Math.Round(zoomEnd, 3),
+                ColorFilter  = colorFilter,
+                StartMs      = starts[i],
+                DurationMs   = durations[i]
+            });
+        }
+
         return new TrailerSpec
         {
             DurationMs       = durationMs,
             BackgroundStyle  = backgroundStyle,
             BackgroundColors = backgroundColors,
             TitleSegments    = segments,
-            TransitionTypes  = transitions
+            TransitionTypes  = transitions,
+            VideoEffects     = videoEffects
         };
     }
 

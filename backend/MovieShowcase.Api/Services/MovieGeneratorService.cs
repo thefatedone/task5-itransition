@@ -98,7 +98,7 @@ public sealed class MovieGeneratorService : IMovieGeneratorService
 
         // Step 8 — Trailer spec. MUST run after Step 1, because it uses
         //          `title` for the mandatory title segment.
-        //   rng calls: ~30–45 depending on segment / color counts:
+        //   rng calls: ~30–45 + segmentCount × 5 (video effects):
         //     1  duration
         //     1  background style
         //     1  background color count (2..3)
@@ -109,6 +109,8 @@ public sealed class MovieGeneratorService : IMovieGeneratorService
         //     segmentCount  weight picks
         //     segmentCount × 5  (animation, font, 3 RGB for text color)
         //     (segmentCount − 1)  transition picks
+        //     segmentCount × 5  video effect per segment (clip, rate,
+        //                       zoomStart, zoomEnd, color filter)
         var trailer = TrailerSpecGenerator.Generate(rng, title);
 
         return new Movie
