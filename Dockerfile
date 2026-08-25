@@ -49,20 +49,33 @@ RUN npm run build
 # Pinned to .NET 8 SDK to match <TargetFramework>net8.0</TargetFramework>.
 # aspnet base image is used as the runtime stage; SDK is only needed here
 # for restore + publish.
+#
+# Folder layout INSIDE this stage mirrors the repo's
+# backend/MovieShowcase.Api/ path: the .csproj is always reached as
+# /src/backend/MovieShowcase.Api/MovieShowcase.Api.csproj in BOTH restore
+# and publish. Keeping restore and publish on the SAME path is mandatory:
+# `dotnet restore` writes ./obj/project.assets.json next to the .csproj,
+# and a later `dotnet publish` from a different path can't find it
+# (NETSDK1004). Previous draft had a path mismatch between the two steps.
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
 
 WORKDIR /src/backend
 
-# Copy the .csproj first for the same restore-layer caching reason as the
-# frontend stage.
-COPY backend/MovieShowcase.Api/MovieShowcase.Api.csproj  ./MovieShowcase.Api.csproj
+# Copy only the .csproj first so this layer caches across source-code edits
+# — any change to the .csproj (or NuGet feeds) invalidates the cache, but
+# a change to a .cs file reuses the restored packages.
+COPY backend/MovieShowcase.Api/MovieShowcase.Api.csproj \
+     ./MovieShowcase.Api/MovieShowcase.Api.csproj
 
-# Restore as a separate RUN so the restore NuGet cache is its own layer and
-# is reused across builds that only touched source code.
-RUN dotnet restore ./MovieShowcase.Api.csproj
+# Restore in the same path we'll publish from. The restore writes
+# ./MovieShowcase.Api/obj/project.assets.json which `dotnet publish` then
+# consumes with --no-restore below.
+RUN dotnet restore ./MovieShowcase.Api/MovieShowcase.Api.csproj
 
-# Now copy the rest of the backend (Locales/*.json, Services, Endpoints, etc.)
-# and publish. Release config strips symbols; /app/publish is the output root.
+# Now copy the rest of the backend source (Locales/*.json, Services,
+# Endpoints, Models, Program.cs, appsettings*.json) into the same folder
+# the .csproj is in. Release config strips symbols; /app/publish is the
+# output root.
 COPY backend/MovieShowcase.Api/  ./MovieShowcase.Api/
 RUN dotnet publish ./MovieShowcase.Api/MovieShowcase.Api.csproj \
         -c Release \
