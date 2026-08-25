@@ -1,0 +1,91 @@
+{
+  "locale": "de-DE",
+  "displayName": "Deutsch (Deutschland)",
+  "bogusLocaleCode": "de",
+  "genres": [
+    "Action",
+    "Komödie",
+    "Drama",
+    "Horror",
+    "Science-Fiction",
+    "Thriller",
+    "Romanze",
+    "Dokumentarfilm",
+    "Animation",
+    "Fantasy"
+  ],
+  "titleTemplates": [
+    "Der {adjective} {noun}",
+    "{noun} der {noun}",
+    "{adjective} {noun}: {subtitle}",
+    "{adjective} {noun}",
+    "Der Letzte {noun}",
+    "{noun}: Die {adjective} Geschichte",
+    "Aufstieg des {adjective} {noun}",
+    "{noun} {noun}",
+    "Jenseits des {adjective} {noun}",
+    "{adjective} {noun} Chroniken",
+    "Der {noun} {adjective} Tage",
+    "Als der {noun} fiel"
+  ],
+  "titleAdjectives": [
+    "Dunkel", "Verloren", "Ewig", "Purpurn", "Still", "Versteckt", "Gebrochen",
+    "Letzte", "Vergessen", "Golden", "Flüsternd", "Fern", "Zerbrochen",
+    "Heilig", "Rachsüchtig", "Brennend", "Gefroren", "Endlos", "Hohl",
+    "Verwundet", "Rastlos", "Wandernd", "Gefallen", "Aufsteigend", "Sterbend",
+    "Lebendig", "Verboten", "Verflucht", "Gesegnet", "Alt", "Mitternächtlich",
+    "Blutig", "Eisern", "Sternenlos", "Mond", "Sonnen", "Grau"
+  ],
+  "titleNouns": [
+    "Horizont", "Schatten", "Versprechen", "Echo", "Traum", "Königreich",
+    "Stern", "Fluss", "Berg", "Garten", "Sturm", "Reise", "Flüstern",
+    "Geheimnis", "Ritter", "Schwert", "Krone", "Imperium", "Legende", "Herz",
+    "Seele", "Feuer", "Winter", "Phönix", "Drache", "Thron", "Maske",
+    "Spiegel", "Labyrinth", "Prophezeiung", "Morgendämmerung", "Abenddämmerung",
+    "Licht", "Dunkelheit", "Erinnerung", "Grab", "Rose", "Flamme"
+  ],
+  "titleSubtitles": [
+    "Ursprünge", "Wiedergeburt", "Erlösung", "Rache", "Erwachen", "Vermächtnis",
+    "Für immer", "Neu geladen", "Entfesselt", "Aufsteigend", "Ewig",
+    "Abrechnung", "Anfang", "Nachwirkungen", "Requiem"
+  ],
+  "reviewTemplates": [
+    "Ehrlich gesagt, die {aspect} war {opinion}. Ich würde {recommendation}.",
+    "Ein {opinion}er Film mit überraschend {opinion2}er {aspect}.",
+    "Die {aspect} hat mich wirklich {verb} — {opinion} von Anfang bis Ende.",
+    "{opinion}! Ich war noch nie so {opinion2} von der {aspect}.",
+    "Was für ein {opinion}es Werk. Die {aspect} hat mich {verb}.",
+    "Ich ging ohne Erwartungen und war von der {aspect} {opinion2}.",
+    "Handlung: {opinion}. Schauspiel: {opinion2}. Tempo: {verb}. Würde {recommendation}.",
+    "Ich höre nicht auf, an die {aspect} zu denken. {opinion}, {opinion2}es Kino.",
+    "Wenn Sie nur wegen der {aspect} kommen, werden Sie {opinion2} sein.",
+    "Hat mich vom ersten bis zum letzten Bild {verb}. Durchweg {opinion}.",
+    "Zweimal geschaut. Die {aspect} {verb} mich immer noch. {opinion}, einfach {opinion}.",
+    "Regie war {opinion}, Tempo war {opinion2}, und die {aspect} hat mich {verb}."
+  ],
+  "reviewOpinions": [
+    "fantastisch", "enttäuschend", "überraschend", "mittelmäßig", "brillant",
+    "vergesslich", "fesselnd", "langweilig", "großartig", "furchtbar",
+    "episch", "originell", "vorhersehbar", "berührend", "kraftvoll",
+    "leicht", "ernst", "lustig", "traurig", "inspirierend",
+    "beunruhigend", "eintönig", "mitreißend", "oberflächlich", "tiefgründig", "zäh"
+  ],
+  "reviewAspects": [
+    "Schauspiel", "Handlung", "Soundtrack", "Tempo", "Kameraführung",
+    "Dialoge", "Ende", "visuelle Effekte", "Schnitt", "Drehbuch",
+    "Regie", "Kostüme", "Kulissen", "Maske", "Beleuchtung",
+    "Musik", "Eröffnungsszene"
+  ],
+  "reviewVerbs": [
+    "begeistert", "enttäuscht", "überrascht", "gelangweilt", "verzaubert",
+    "zum Lachen gebracht", "verängstigt", "inspiriert", "berührt",
+    "verärgert", "beunruhigt", "genervt", "fasziniert", "erfreut",
+    "beeindruckt", "kalt gelassen", "in Atem gehalten"
+  ],
+  "reviewRecommendations": [
+    "Freunden empfehlen", "nie wieder ansehen", "nochmal schauen",
+    "diesen Film überspringen", "lohnt sich", "verschwendet eure Zeit nicht",
+    "ein Muss", "lieber zu Hause bleiben", "perfekt für den Abend",
+    "einer der besten des Jahres", "an einem ruhigen Abend schauen"
+  ]
+}

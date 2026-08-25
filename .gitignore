@@ -1,0 +1,39 @@
+# ----------------------------------------------------------------------
+# .NET / Visual Studio
+# ----------------------------------------------------------------------
+bin/
+obj/
+out/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+.vscode/
+*.nupkg
+*.snupkg
+.nuget/
+TestResults/
+[Tt]est[Rr]esult*/
+*.VisualState.xml
+*.csproj.user
+
+# ----------------------------------------------------------------------
+# Node / Vite
+# ----------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ----------------------------------------------------------------------
+# IDEs / OS
+# ----------------------------------------------------------------------
+.idea/
+.DS_Store
+Thumbs.db

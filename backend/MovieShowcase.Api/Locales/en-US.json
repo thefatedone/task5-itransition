@@ -1,0 +1,90 @@
+{
+  "locale": "en-US",
+  "displayName": "English (United States)",
+  "bogusLocaleCode": "en",
+  "genres": [
+    "Action",
+    "Comedy",
+    "Drama",
+    "Horror",
+    "Sci-Fi",
+    "Thriller",
+    "Romance",
+    "Documentary",
+    "Animation",
+    "Fantasy"
+  ],
+  "titleTemplates": [
+    "The {adjective} {noun}",
+    "{noun} of {noun}",
+    "{adjective} {noun}: {subtitle}",
+    "{adjective} {noun}",
+    "The Last {noun}",
+    "{noun}: The {adjective} Story",
+    "Rise of the {adjective} {noun}",
+    "{noun} {noun}",
+    "Beyond the {adjective} {noun}",
+    "{adjective} {noun} Chronicles",
+    "The {noun} of {adjective} Days",
+    "When the {noun} Fell"
+  ],
+  "titleAdjectives": [
+    "Dark", "Lost", "Eternal", "Crimson", "Silent", "Hidden", "Broken", "Last",
+    "Forgotten", "Golden", "Whispering", "Distant", "Shattered", "Sacred",
+    "Vengeful", "Burning", "Frozen", "Endless", "Hollow", "Wounded",
+    "Restless", "Wandering", "Fallen", "Rising", "Dying", "Living",
+    "Forbidden", "Cursed", "Blessed", "Ancient", "Midnight", "Iron",
+    "Starless", "Hollowed", "Severed", "Endless", "Bleak"
+  ],
+  "titleNouns": [
+    "Horizon", "Shadow", "Promise", "Echo", "Dream", "Kingdom", "Star", "River",
+    "Mountain", "Garden", "Storm", "Voyage", "Whisper", "Secret", "Knight",
+    "Sword", "Crown", "Empire", "Legend", "Heart", "Soul", "Fire", "Winter",
+    "Phoenix", "Dragon", "Throne", "Mask", "Mirror", "Labyrinth", "Prophecy",
+    "Dawn", "Dusk", "Light", "Darkness", "Memory", "Tomb", "Rose", "Flame"
+  ],
+  "titleSubtitles": [
+    "Origins", "Reborn", "Redemption", "Revenge", "Awakening", "Legacy",
+    "Forever", "Reloaded", "Unchained", "Ascending", "Eternal", "Reckoning",
+    "Genesis", "Aftermath", "Requiem"
+  ],
+  "reviewTemplates": [
+    "Honestly, the {aspect} was {opinion}. I would {recommendation}.",
+    "A {opinion} film with surprisingly {opinion2} {aspect}.",
+    "The {aspect} really {verb} me — {opinion} from start to finish.",
+    "{opinion}! I have never been so {opinion2} by the {aspect}.",
+    "What a {opinion} piece of work. The {aspect} {verb}.",
+    "I went in expecting nothing and was {opinion2} by the {aspect}.",
+    "Plot: {opinion}. Acting: {opinion2}. Pacing: {verb}. Would {recommendation}.",
+    "Cannot stop thinking about the {aspect}. {opinion}, {opinion2} cinema.",
+    "If you only care about the {aspect}, you will be {opinion2}.",
+    "{verb} from the first frame to the last. Easily {opinion}.",
+    "Watched it twice. The {aspect} still {verb} me. {opinion}, just {opinion}.",
+    "Direction was {opinion}, pacing was {opinion2}, and the {aspect} {verb}."
+  ],
+  "reviewOpinions": [
+    "fantastic", "disappointing", "surprising", "mediocre", "brilliant",
+    "forgettable", "riveting", "boring", "amazing", "terrible", "epic",
+    "original", "predictable", "moving", "powerful", "lightweight",
+    "serious", "hilarious", "somber", "inspiring", "gripping",
+    "underwhelming", "electrifying", "shallow", "profound", "tedious"
+  ],
+  "reviewAspects": [
+    "acting", "plot", "soundtrack", "pacing", "cinematography", "dialogue",
+    "ending", "visual effects", "editing", "screenplay", "direction",
+    "costumes", "production design", "makeup", "lighting", "score",
+    "opening sequence"
+  ],
+  "reviewVerbs": [
+    "blew away", "disappointed", "surprised", "bored", "captivated",
+    "cracked me up", "terrified", "inspired", "moved", "upset",
+    "unsettled", "annoyed", "fascinated", "delighted", "impressed",
+    "left me cold", "kept me guessing"
+  ],
+  "reviewRecommendations": [
+    "watch again", "skip this one", "recommend to friends",
+    "never watch again", "worth a viewing", "don't waste your time",
+    "a must-see", "better stay home", "perfect for the evening",
+    "one of the best this year", "catch it on a quiet night"
+  ]
+}

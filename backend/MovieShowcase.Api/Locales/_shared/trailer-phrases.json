@@ -1,0 +1,17 @@
+{
+  "_comment": "Locale-independent cinematic cliché phrases used as optional filler in trailer segments. Kept here (not under any specific locale) because trailer conventions are universal, not region-specific. Add more phrases any time — the generator picks without replacement.",
+  "phrases": [
+    "IN A WORLD...",
+    "THIS FALL",
+    "COMING SOON",
+    "ONE HERO",
+    "NO ESCAPE",
+    "FROM THE VOID",
+    "BEFORE TIME",
+    "ONE LAST CHANCE",
+    "NOTHING IS REAL",
+    "THE END BEGINS",
+    "WITNESS THE UNTHINKABLE",
+    "A NEW LEGEND"
+  ]
+}

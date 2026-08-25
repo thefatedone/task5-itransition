@@ -1,0 +1,674 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* -------------------------------------------------------------------------
+ * Toolbar
+ *
+ * Single horizontal row of generation-parameter controls. Uses flexbox
+ * with `flex-wrap: wrap` so it degrades gracefully on narrow viewports:
+ * the four groups reflow vertically once the row no longer fits.
+ * Visual styling is intentionally minimal — functional layout only.
+ * ------------------------------------------------------------------------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem 1.25rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #181818;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+}
+
+.toolbar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 160px;
+}
+
+.toolbar-group--seed {
+  /* Give the seed input a little extra room — it tends to grow. */
+  min-width: 200px;
+}
+
+.toolbar-group label {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.toolbar-group select,
+.toolbar-group input[type="text"],
+.toolbar-group input[type="range"] {
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #111;
+  color: inherit;
+}
+
+.toolbar-group input[type="range"] {
+  padding: 0;
+  height: 1.5rem;
+}
+
+.toolbar-group button {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
+  color: inherit;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.toolbar-group button:hover {
+  background: #2c2c2c;
+}
+
+.toolbar-value {
+  font-variant-numeric: tabular-nums;
+  /* Slightly emphasise the live numeric readout. */
+  color: #ffd479;
+}
+
+/* -------------------------------------------------------------------------
+ * ParamsReadout
+ * ------------------------------------------------------------------------- */
+
+.params-readout {
+  margin-top: 1rem;
+}
+
+.params-readout__json {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: auto;
+  font-size: 13px;
+  line-height: 1.4;
+  border: 1px solid #2a2a2a;
+}
+
+/* -------------------------------------------------------------------------
+ * Table view
+ * ------------------------------------------------------------------------- */
+
+.table-view {
+  margin-top: 1.5rem;
+}
+
+.table-view__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.table-view__status {
+  opacity: 0.7;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-view__error {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+}
+
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #181818;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.catalog-table th,
+.catalog-table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.95rem;
+  vertical-align: top;
+}
+
+.catalog-table thead th {
+  background: #1f1f1f;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.catalog-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.catalog-table__chevron {
+  width: 32px;
+  text-align: center;
+}
+
+.catalog-row {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.catalog-row:hover {
+  background: #1c1c1c;
+}
+
+.catalog-row--expanded {
+  background: #1c1c1c;
+}
+
+.catalog-row__toggle {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+}
+
+.catalog-row__toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.catalog-row__detail td {
+  background: #141414;
+  padding: 1rem;
+}
+
+/* ---- Expanded panel ---- */
+
+.expanded-panel {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .expanded-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.expanded-panel__trailer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.expanded-panel__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0; /* allow long review text to wrap */
+}
+
+.expanded-panel__likes {
+  font-size: 0.95rem;
+}
+
+.expanded-panel__reviews h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.expanded-panel__reviews ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.expanded-panel__reviews li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+/* ---- Trailer freeze frame (canvas) ---- */
+
+.trailer-freeze-frame {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  display: block;
+  border: 1px solid #2a2a2a;
+  background: #000;
+}
+
+/* The overlay / title classes below are kept for backwards-compatibility
+ * with any third-party CSS that might still reference them. They have
+ * no effect on the canvas renderer — the canvas paints the title
+ * itself — so they're harmless if unused.
+ */
+.trailer-freeze-frame__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.trailer-freeze-frame__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+/* ---- Trailer play button ---- */
+
+.trailer-play-button {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
+  color: inherit;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.trailer-play-button:hover {
+  background: #2c2c2c;
+}
+
+/* ---- Trailer modal ---- */
+
+.trailer-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+}
+
+.trailer-modal {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem 1.25rem 1.25rem;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.trailer-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.trailer-modal__title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.trailer-modal__close {
+  font: inherit;
+  font-size: 1.1rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #444;
+  background: #222;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-modal__close:hover {
+  background: #2c2c2c;
+}
+
+.trailer-modal__canvas-wrap {
+  /* Cap the modal canvas at a comfortable size on big screens; on
+   * smaller screens the modal's max-width: 100% and the canvas's
+   * max-width below keep it inside the viewport. */
+  display: flex;
+  justify-content: center;
+}
+
+.trailer-modal__canvas {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 6px;
+  border: 1px solid #2a2a2a;
+}
+
+.trailer-modal__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+}
+
+.trailer-modal__progress-track {
+  flex: 1;
+  height: 6px;
+  background: #222;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.trailer-modal__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8a00, #ffd479);
+  transition: width 0.08s linear;
+}
+
+.trailer-modal__time {
+  min-width: 80px;
+  text-align: right;
+  opacity: 0.85;
+}
+
+/* ---- Pagination ---- */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #2c2c2c;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination__indicator {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+ * View-mode switcher
+ *
+ * A simple two-tab control. Styled like a segmented pill so it reads as
+ * "pick one of two views" rather than as a navigation bar.
+ * ------------------------------------------------------------------------- */
+
+.view-mode-switcher {
+  display: inline-flex;
+  margin: 1rem 0;
+  background: #181818;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-mode-switcher__tab {
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-right: 1px solid #2a2a2a;
+}
+
+.view-mode-switcher__tab:last-child {
+  border-right: none;
+}
+
+.view-mode-switcher__tab:hover {
+  background: #1c1c1c;
+}
+
+.view-mode-switcher__tab.is-active {
+  background: #2c2c2c;
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+ * Gallery view
+ *
+ * The catalog rendered as a responsive CSS grid of cards with internal
+ * scrolling. The scroll container has a fixed height (70vh) so the
+ * toolbar above stays put and the cards scroll inside their own pane —
+ * this is what lets us attach an IntersectionObserver with the scroll
+ * container as its `root` and reliably detect when the sentinel becomes
+ * visible.
+ * ------------------------------------------------------------------------- */
+
+.gallery-view {
+  margin-top: 0.5rem;
+}
+
+.gallery-view__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-view__status {
+  opacity: 0.7;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.gallery-view__error {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+.gallery-view__scroll {
+  height: 70vh;
+  overflow-y: auto;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #141414;
+}
+
+.gallery-view__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  grid-auto-flow: dense;
+  /* Don't stretch cards to match the tallest one in their row — without
+   * this, an expanded card would visually inflate all its neighbours. */
+  align-items: start;
+}
+
+.gallery-view__sentinel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  /* A minimum height so the sentinel has a measurable intersection
+   * target even when there's no status text to render. */
+  min-height: 1px;
+}
+
+.gallery-view__loading,
+.gallery-view__end {
+  margin: 0;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+/* ---- Gallery card ---- */
+
+.gallery-card {
+  background: #181818;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background 0.12s;
+}
+
+.gallery-card:hover {
+  background: #1c1c1c;
+}
+
+.gallery-card.is-expanded {
+  /* When expanded, span two columns so the trailer freeze frame and
+   * review list have room to breathe. `grid-auto-flow: dense` on the
+   * parent fills any holes left behind with smaller cards. */
+  grid-column: span 2;
+}
+
+.gallery-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.gallery-card__index {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+  font-size: 0.85rem;
+  min-width: 32px;
+}
+
+.gallery-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.gallery-card__meta {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.gallery-card__expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.gallery-card__trailer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gallery-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.gallery-card__likes {
+  font-size: 0.9rem;
+}
+
+.gallery-card__reviews h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gallery-card__reviews ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.gallery-card__reviews li {
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+  font-size: 0.9rem;
+}

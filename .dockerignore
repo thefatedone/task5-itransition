@@ -1,0 +1,45 @@
+# Build outputs — never want these in an image layer.
+**/bin
+**/obj
+**/dist
+**/out
+
+# Dependencies — restored/installed inside the image.
+**/node_modules
+
+# VCS — image layers should be reproducible from source, not from history.
+.git
+.gitignore
+.gitattributes
+
+# IDE / editor metadata — not useful in a runtime image.
+.vs
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS / shell detritus.
+.DS_Store
+Thumbs.db
+
+# Local environment files — secrets should never leak into images.
+**/.env
+**/.env.*
+**/appsettings.*.local.json
+
+# Docs that don't belong in the runtime image.
+README.md
+**/*.md
+
+# Docker itself — avoid recursion / confusion.
+Dockerfile
+.dockerignore
+
+# TypeScript build info — regenerated on every `tsc -b`.
+**/*.tsbuildinfo
+
+# Test / scratch folders that occasionally appear.
+**/coverage
+**/.nyc_output
+**/*.log
